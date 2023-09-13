@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5", // 指定目标ES版本
+    "module": "ESNext", // 指定模块系统（这里使用CommonJS）
+    "jsx": "react", // 指定JSX系统（这里使用React）
+    "esModuleInterop": true,
+    "strict": true, // 开启严格模式（可选）
+    "baseUrl": ".",
+    "paths": {
+      "src/components": ["src/components"]
+    }
+  },
+  "include": [
+    "src/**/*", // 指定包含的文件或目录（这里包含src目录下的所有文件）
+    "src/index.tsx"
+  ]
+}
