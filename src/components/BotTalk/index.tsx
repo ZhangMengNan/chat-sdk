@@ -52,7 +52,7 @@ const BotTalk = (props: Props) => {
         <div className='bot' ref={chatRef} onClick={handleChat}>
           <div className='bot-container'>
             <div className='bot-img'></div>
-            <p>智能对话</p>
+            <div className='bot-desc'>智能对话</div>
           </div>
           <div className='bot-shadow'></div>
         </div>
