@@ -121,7 +121,7 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
           `ws://36.103.177.208:9020/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`,
         );
       } else {
-
+        alert(res.message || '请求出错，请重试');
       }
     }
   };
