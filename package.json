@@ -29,6 +29,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@rollup/plugin-json": "^6.0.0",
     "@types/react": "^18.2.21",
     "postcss": "^8.4.29",
     "rollup-plugin-postcss": "^4.0.2"

@@ -1,17 +1,19 @@
-import React from 'react'
-import BotTalk from './components/BotTalk/index'
-import IntelligentTalk from './components/IntelligentTalk/index'
+import React, { useState } from 'react';
+import BotTalk from './components/BotTalk/index';
+import IntelligentTalk from './components/IntelligentTalk/index';
 
+type Props = {
+  uuid: string | undefined;
+};
 
-type Props = {}
-
-const App = (props: Props) => {
+const App = ({ uuid }: Props) => {
+  const [isShowTalk, setIsShowTalk] = useState(false)
   return (
     <>
-      <BotTalk />
-      <IntelligentTalk />
+      <BotTalk setIsShowTalk={setIsShowTalk} />
+      <IntelligentTalk uuid={uuid} isShowTalk={isShowTalk} setIsShowTalk={setIsShowTalk} />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

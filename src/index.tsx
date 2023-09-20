@@ -4,7 +4,10 @@ import App from 'src/App';
 
 const myComponent = document.createElement('div');
 myComponent.id = 'myRoot';
+const uuid = document.currentScript?.getAttribute('uuid') || '';
 
-ReactDOM.createRoot(myComponent as HTMLElement).render(<App />);
+
+
+ReactDOM.createRoot(myComponent as HTMLElement).render(<App uuid={uuid} />);
 
 document.body.appendChild(myComponent);

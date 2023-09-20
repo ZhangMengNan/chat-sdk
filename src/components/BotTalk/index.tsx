@@ -3,9 +3,11 @@ import Draggable from 'react-draggable';
 
 import './assets/index.scss';
 
-type Props = {};
+type Props = {
+  setIsShowTalk: (flag: boolean) => any;
+};
 
-const BotTalk = (props: Props) => {
+const BotTalk = ({ setIsShowTalk }: Props) => {
   const chatRef = useRef<any>();
   const [hasDrag, setHasDrag] = useState(false);
   useEffect(() => {
@@ -41,6 +43,7 @@ const BotTalk = (props: Props) => {
       // 打开IntelligentTalk
       const uniqueMask = document.getElementById('unique-mask');
       if (uniqueMask) {
+        setIsShowTalk(true);
         (document.getElementById('unique-mask') as any).style.display = 'flex';
       }
     }

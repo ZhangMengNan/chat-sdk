@@ -6,6 +6,7 @@ import replace from 'rollup-plugin-replace'
 import postcss from 'rollup-plugin-postcss'
 import { terser } from 'rollup-plugin-terser'
 import postcssUrl from 'postcss-url';
+import json from '@rollup/plugin-json';
 
 export default {
   input: 'src/index.tsx', // 替换成你的React组件入口文件路径
@@ -45,6 +46,7 @@ export default {
         }),
       ],
     }),
-    terser()
+    terser(),
+    json()
   ],
 };

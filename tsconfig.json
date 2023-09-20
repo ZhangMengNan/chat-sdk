@@ -9,7 +9,8 @@
     "paths": {
       "src/components": ["src/components"]
     },
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "lib": ["ES2015", "dom"]
   },
   "include": [
     "src/**/*", // 指定包含的文件或目录（这里包含src目录下的所有文件）
