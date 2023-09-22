@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Draggable from 'react-draggable';
 
 import './assets/index.scss';
+import { setRem } from 'src/utils/rem';
 
 type Props = {
   setIsShowTalk: (flag: boolean) => any;
@@ -13,6 +14,11 @@ const BotTalk = ({ setIsShowTalk }: Props) => {
   useEffect(() => {
     // console.log(botRef.current.style.height = document.documentElement.clientHeight + 'px');
     bindMouseEvent();
+    setRem();
+    // 改变窗口大小时重新设置 rem
+    window.onresize = function () {
+      setRem();
+    };
   }, []);
 
   const bindMouseEvent = () => {
