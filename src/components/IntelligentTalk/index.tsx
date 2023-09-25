@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import Draggable from 'react-draggable';
 // import { message } from 'antd';
 
-import './assets/index.scss';
 import { reqGetPreparationChatData } from 'src/api';
 import { getCurrentDateTime } from 'src/utils';
+import './assets/index.scss';
 
 type Props = {
   uuid: string | undefined;
@@ -64,6 +64,11 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
   const [isAnswering, setIsAnswering] = useState(false);
   // 暂存的socket实例
   const [socket, setSocket] = useState<WebSocket>();
+  // 对话机器人头像和名称
+  const [robatMsg, setRobatMsg] = useState({
+    bot_avatar_url: '',
+    bot_name: '',
+  });
 
   useEffect(() => {
     iframeBoxRef.current?.scrollTo({
@@ -74,9 +79,9 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
 
   useEffect(() => {
     console.log(isShowTalk);
-    if(isShowTalk) {
-      console.log('----进来了~',isShowTalk);
-      
+    if (isShowTalk) {
+      console.log('----进来了~', isShowTalk);
+
       getPreparationData();
     } else {
       socket?.close();
@@ -116,9 +121,13 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
     if (uuid) {
       const res = await reqGetPreparationChatData(uuid);
       console.log(uuid, res);
-      if(res?.code === 0) {
+      if (res?.code === 0) {
+        setRobatMsg({
+          bot_avatar_url: res.data.bot_avatar_url,
+          bot_name: res.data.bot_name,
+        });
         connectSocket(
-          `wss://yantu-playground.anatta.vip:8090/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`,
+          `wss://yantu-playground.anatta.vip:8090/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`
         );
       } else {
         alert(res.message || '请求出错，请重试');
@@ -206,7 +215,9 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
     if (item.type === TalkPeople.robat) {
       return (
         <div className='talk-robat' key={index}>
-          <div className='robat-avatar'></div>
+          <div className='robat-avatar'>
+            {!!robatMsg.bot_avatar_url && <img src={robatMsg.bot_avatar_url} alt='' />}
+          </div>
           <div className='robat-msg'>
             <div className='robat-name'>AI小秘书</div>
             <div className='robat-answer'>{item.msg}</div>
