@@ -130,7 +130,19 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
           `wss://yantu-playground.anatta.vip:8090/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`
         );
       } else {
-        alert(res.message || '请求出错，请重试');
+        // alert(res.message || '请求出错，请重试');
+        if(res.message) {
+          const msg = {
+            type: TalkPeople.robat,
+            msg: res.message,
+            time: getCurrentDateTime(),
+          };
+          tempMsgList.push(msg);
+          setMsgQueue(tempMsgList);
+          setIsAnswering(true);
+        } else {
+          alert('请求出错，请重试')
+        }
       }
     }
   };
@@ -157,7 +169,7 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
   };
 
   const handleSubmit = () => {
-    if (!inputValue) return;
+    if (!inputValue || isAnswering) return;
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       // message.warning('WebSocket连接失败，请稍后再试');
       alert('WebSocket连接失败，请稍后再试');
@@ -219,7 +231,7 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
             {!!robatMsg.bot_avatar_url && <img src={robatMsg.bot_avatar_url} alt='' />}
           </div>
           <div className='robat-msg'>
-            <div className='robat-name'>AI小秘书</div>
+            <div className='robat-name'>{robatMsg.bot_name || 'AI小秘书'}</div>
             <div className='robat-answer'>{item.msg}</div>
           </div>
           <div className='robat-time'>{item.time}</div>
