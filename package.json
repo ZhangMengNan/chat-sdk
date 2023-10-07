@@ -29,9 +29,11 @@
   },
   "type": "module",
   "devDependencies": {
+    "@babel/core": "^7.23.0",
     "@rollup/plugin-json": "^6.0.0",
     "@types/react": "^18.2.21",
     "postcss": "^8.4.29",
-    "rollup-plugin-postcss": "^4.0.2"
+    "rollup-plugin-postcss": "^4.0.2",
+    "typescript": "^5.2.2"
   }
 }

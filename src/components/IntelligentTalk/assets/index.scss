@@ -87,7 +87,7 @@
         .questioner-msg {
           max-width: 450px;
           border-radius: 10px 0 10px 10px;
-          background: #E0EEFF;
+          background: #e0eeff;
           box-sizing: border-box;
           padding: 8px 17px;
           color: #242424;
@@ -133,6 +133,79 @@
           box-shadow: none;
           cursor: not-allowed;
         }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 750px) {
+    .intelligent-talk {
+      width: 100%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+
+      & > header {
+        padding: 15px;
+        font-size: 16px;
+
+        .talk-close {
+          width: 15px;
+          height: 15px;
+          background-size: 100%;
+        }
+      }
+
+      .talk-box {
+        padding: 15px;
+      }
+
+      .talk-input {
+        display: flex;
+        padding: 15px;
+
+        > input {
+          width: 100%;
+          height: 45px;
+          padding: 10px;
+          font-size: 14px;
+          margin-right: 15px;
+        }
+
+        > button,
+        button.submit-btn {
+          width: 100px;
+          height: 45px;
+          font-size: 14px;
+        }
+      }
+
+      .robat-msg,
+      .questioner-msg {
+        width: calc(100% - 100px);
+      }
+
+      .robat-avatar,
+      .questioner-avatar {
+        width: 30px !important;
+        height: 30px !important;
+      }
+
+      .robat-answer,
+      .questioner-msg {
+        max-width: initial !important;
+        word-wrap: break-word;
+        margin-right: 10px !important;
+      }
+
+      .robat-time,
+      .questioner-time {
+        font-size: 14px !important;
+      }
+
+      .questioner-time {
+        margin-right: 10px !important;
       }
     }
   }
