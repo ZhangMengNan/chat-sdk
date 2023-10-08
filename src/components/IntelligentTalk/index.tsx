@@ -79,7 +79,7 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
   }, [msgQueue])
 
   useEffect(() => {
-    console.log(isShowTalk)
+    console.log('是否显示对话弹窗', isShowTalk)
     if (isShowTalk) {
       console.log('----进来了~', isShowTalk)
 

@@ -14,14 +14,15 @@ const BotTalk = ({ setIsShowTalk }: Props) => {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    console.log('root', document.getElementById('myRoot'))
     // console.log(botRef.current.style.height = document.documentElement.clientHeight + 'px');
     handleWidthChange()
     bindMouseEvent()
-    setRem()
+    // setRem()
     // 改变窗口大小时重新设置 rem
     window.onresize = function () {
       handleWidthChange()
-      setRem()
+      // setRem()
     }
   }, [])
 
