@@ -13,6 +13,7 @@ const BotTalk = ({ setIsShowTalk }: Props) => {
   const chatRef = useRef<any>()
   const [hasDrag, setHasDrag] = useState(true)
   useEffect(() => {
+    console.log('root', document.getElementById('myRoot'))
     // console.log(botRef.current.style.height = document.documentElement.clientHeight + 'px');
     bindMouseEvent()
     setRem()
