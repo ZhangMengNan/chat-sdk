@@ -1,32 +1,32 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Draggable from 'react-draggable';
+import React, { useEffect, useRef, useState } from 'react'
+import Draggable from 'react-draggable'
 // import { message } from 'antd';
 
-import { reqGetPreparationChatData } from 'src/api';
-import { getCurrentDateTime } from 'src/utils';
-import './assets/index.scss';
+import { reqGetPreparationChatData } from 'src/api'
+import { getCurrentDateTime } from 'src/utils'
+import './assets/index.scss'
 
 type Props = {
-  uuid: string | undefined;
-  isShowTalk: boolean;
-  setIsShowTalk: (flag: boolean) => any;
-};
+  uuid: string | undefined
+  isShowTalk: boolean
+  setIsShowTalk: (flag: boolean) => any
+}
 
 enum TalkPeople {
   robat = 1,
   questioner,
 }
 export interface ChatMessage {
-  status: ChatMsgStatus;
-  msg_tpl: MetaMtMsgTpl;
-  msg?: string;
-  info?: any;
+  status: ChatMsgStatus
+  msg_tpl: MetaMtMsgTpl
+  msg?: string
+  info?: any
 }
 
 interface TalkData {
-  type: TalkPeople;
-  msg: string;
-  time: string;
+  type: TalkPeople
+  msg: string
+  time: string
 }
 
 export enum ChatMsgStatus {
@@ -50,102 +50,104 @@ export enum MetaMtMsgTpl {
   MaxNum = 100022, // 达到最大对话次数限制
 }
 
-const talkData: TalkData[] = [];
+const talkData: TalkData[] = []
 
-type MsgObj = typeof talkData extends (infer T)[] ? T : never;
+type MsgObj = typeof talkData extends (infer T)[] ? T : never
 
 const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
+  let htmlWidth =
+    document.documentElement.clientWidth || document.body.clientWidth
   let tempString = '',
-    tempMsgList = talkData;
-  const iframeBoxRef = useRef<any>();
-  const [msgQueue, setMsgQueue] = useState<MsgObj[]>(talkData);
-  const [inputValue, setInputValue] = useState('');
+    tempMsgList = talkData
+  const iframeBoxRef = useRef<any>()
+  const [msgQueue, setMsgQueue] = useState<MsgObj[]>(talkData)
+  const [inputValue, setInputValue] = useState('')
   // 是否正在回答
-  const [isAnswering, setIsAnswering] = useState(false);
+  const [isAnswering, setIsAnswering] = useState(false)
   // 暂存的socket实例
-  const [socket, setSocket] = useState<WebSocket>();
+  const [socket, setSocket] = useState<WebSocket>()
   // 对话机器人头像和名称
   const [robatMsg, setRobatMsg] = useState({
     bot_avatar_url: '',
     bot_name: '',
-  });
+  })
 
   useEffect(() => {
     iframeBoxRef.current?.scrollTo({
       top: 100000,
       behavior: 'smooth',
-    });
-  }, [msgQueue]);
+    })
+  }, [msgQueue])
 
   useEffect(() => {
-    console.log(isShowTalk);
     if (isShowTalk) {
-      console.log('----进来了~', isShowTalk);
+      console.log('----进来了~', isShowTalk)
 
-      getPreparationData();
+      getPreparationData()
     } else {
-      socket?.close();
+      socket?.close()
     }
     return () => {
-      socket?.close();
-    };
-  }, [isShowTalk]); //依赖serverUrl进行重渲染
+      socket?.close()
+    }
+  }, [isShowTalk]) //依赖serverUrl进行重渲染
 
   const connectSocket = (serverUrl: string) => {
-    const newSocket = new WebSocket(serverUrl);
+    const newSocket = new WebSocket(serverUrl)
 
     newSocket.onopen = () => {
-      console.log('ws连接成功');
+      console.log('ws连接成功')
       // todo: 连接成功后需要一开始获取智能体的招呼语
       // sendMessage();
-    };
+    }
 
-    newSocket.onmessage = e => {
-      console.log('Received message: ', e.data, msgQueue);
-      const msgObj = JSON.parse(e.data);
-      processData(msgObj);
+    newSocket.onmessage = (e) => {
+      console.log('Received message: ', e.data, msgQueue)
+      const msgObj = JSON.parse(e.data)
+      processData(msgObj)
       // setMessage(event.data);
-    };
+    }
 
-    newSocket.onerror = error => {
-      console.error('WebSocket error: ', error);
-    };
+    newSocket.onerror = (error) => {
+      console.error('WebSocket error: ', error)
+    }
 
     newSocket.onclose = () => {
-      console.log('WebSocket closed');
-    };
-    setSocket(newSocket);
-  };
+      console.log('WebSocket closed')
+    }
+    setSocket(newSocket)
+  }
 
   const getPreparationData = async () => {
     if (uuid) {
-      const res = await reqGetPreparationChatData(uuid);
-      console.log(uuid, res);
+      const res = await reqGetPreparationChatData(uuid)
       if (res?.code === 0) {
         setRobatMsg({
           bot_avatar_url: res.data.bot_avatar_url,
           bot_name: res.data.bot_name,
-        });
+        })
+        // yantu-ai-b.anatta.vip:8090 正式环境
+        // yantu-playground.anatta.vip:8090 测试环境
         connectSocket(
-          `wss://yantu-playground.anatta.vip:8090/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`
-        );
+          `wss://yantu-ai-b.anatta.vip:8090/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`
+        )
       } else {
         // alert(res.message || '请求出错，请重试');
-        if(res.message) {
+        if (res.message) {
           const msg = {
             type: TalkPeople.robat,
             msg: res.message,
             time: getCurrentDateTime(),
-          };
-          tempMsgList.push(msg);
-          setMsgQueue(tempMsgList);
-          setIsAnswering(true);
+          }
+          tempMsgList.push(msg)
+          setMsgQueue(tempMsgList)
+          setIsAnswering(true)
         } else {
           alert('请求出错，请重试')
         }
       }
     }
-  };
+  }
 
   // 用于转换对话消息的函数
   const transformMsg = (msg: string): ChatMessage => {
@@ -153,48 +155,48 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
       status: ChatMsgStatus.Complete,
       msg_tpl: MetaMtMsgTpl.Text,
       msg: msg,
-    };
-  };
+    }
+  }
 
   const handleClose = () => {
-    const uniqueMask = document.getElementById('unique-mask');
+    const uniqueMask = document.getElementById('unique-mask')
     if (uniqueMask) {
-      setIsShowTalk(false);
-      (document.getElementById('unique-mask') as any).style.display = 'none';
+      setIsShowTalk(false)
+      ;(document.getElementById('unique-mask') as any).style.display = 'none'
     }
-  };
+  }
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setInputValue(val);
-  };
+    const val = e.target.value
+    setInputValue(val)
+  }
 
   const handleSubmit = () => {
-    if (!inputValue || isAnswering) return;
+    if (!inputValue || isAnswering) return
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       // message.warning('WebSocket连接失败，请稍后再试');
-      alert('WebSocket连接失败，请稍后再试');
-      return;
+      alert('WebSocket连接失败，请稍后再试')
+      return
     }
     const msg = {
       type: TalkPeople.questioner,
       msg: inputValue,
       time: getCurrentDateTime(),
-    };
-    console.log([...msgQueue, msg]);
-    tempMsgList.push(msg);
-    setMsgQueue(tempMsgList);
-    socket.send(JSON.stringify(transformMsg(inputValue)));
+    }
+    console.log([...msgQueue, msg])
+    tempMsgList.push(msg)
+    setMsgQueue(tempMsgList)
+    socket.send(JSON.stringify(transformMsg(inputValue)))
     // 开始回答
     // setIsAnswering(true);
     // 清除inputValue值
-    setInputValue('');
-  };
+    setInputValue('')
+  }
 
   const initMsgObj = (msg: string = '') => ({
     type: TalkPeople.robat,
     msg: msg,
     time: getCurrentDateTime(),
-  });
+  })
 
   // 处理智能体发送的消息的函数
   const processData = (msgObj: ChatMessage) => {
@@ -202,83 +204,118 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
       type: TalkPeople.robat,
       msg: tempString,
       time: getCurrentDateTime(),
-    };
+    }
     if (msgObj.status === ChatMsgStatus.StreamBegin) {
-      tempString = msgObj?.msg || '';
-      tempMsgList.push(initMsgObj());
-      setIsAnswering(true);
-      setMsgQueue(tempMsgList);
+      tempString = msgObj?.msg || ''
+      tempMsgList.push(initMsgObj())
+      setIsAnswering(true)
+      setMsgQueue(tempMsgList)
     }
     if (msgObj.status === ChatMsgStatus.Stream) {
-      tempString += msgObj.msg;
-      msgParams.msg += msgObj.msg || '';
-      tempMsgList.splice(tempMsgList.length - 1, 1, msgParams);
-      const temp = [...tempMsgList];
-      temp.pop();
-      temp.push(msgParams);
-      setMsgQueue(temp);
+      tempString += msgObj.msg
+      msgParams.msg += msgObj.msg || ''
+      tempMsgList.splice(tempMsgList.length - 1, 1, msgParams)
+      const temp = [...tempMsgList]
+      temp.pop()
+      temp.push(msgParams)
+      setMsgQueue(temp)
     }
     if (msgObj.status === ChatMsgStatus.StreamEnd) {
-      setIsAnswering(false);
+      setIsAnswering(false)
     }
-  };
+  }
 
   const RenderMsg = (item: MsgObj, index: number) => {
     if (item.type === TalkPeople.robat) {
       return (
-        <div className='talk-robat' key={index}>
-          <div className='robat-avatar'>
-            {!!robatMsg.bot_avatar_url && <img src={robatMsg.bot_avatar_url} alt='' />}
+        <div className="talk-robat" key={index}>
+          <div className="robat-avatar">
+            {!!robatMsg.bot_avatar_url && (
+              <img src={robatMsg.bot_avatar_url} alt="" />
+            )}
           </div>
-          <div className='robat-msg'>
-            <div className='robat-name'>{robatMsg.bot_name || 'AI小秘书'}</div>
-            <div className='robat-answer'>{item.msg}</div>
+          <div className="robat-msg">
+            <div className="robat-name">{robatMsg.bot_name || 'AI小秘书'}</div>
+            <div className="robat-answer">{item.msg}</div>
           </div>
-          <div className='robat-time'>{item.time}</div>
+          <div className="robat-time">{item.time}</div>
         </div>
-      );
+      )
     } else {
       return (
-        <div className='talk-questioner' key={index}>
-          <div className='questioner-time'>{item.time}</div>
-          <div className='questioner-msg'>{item.msg}</div>
-          <div className='questioner-avatar'></div>
+        <div className="talk-questioner" key={index}>
+          <div className="questioner-time">{item.time}</div>
+          <div className="questioner-msg">{item.msg}</div>
+          <div className="questioner-avatar"></div>
         </div>
-      );
+      )
     }
-  };
+  }
 
   return (
-    <div className='bot-mask' id='unique-mask' onClick={handleClose}>
-      <Draggable bounds='.bot-mask' handle='.talk-header'>
-        <div className='intelligent-talk' onClick={e => e.stopPropagation()}>
-          <header className='talk-header'>
-            <div className='talk-title'>智能对话</div>
-            <div className='talk-close' onClick={handleClose}></div>
+    <div className="bot-mask" id="unique-mask" onClick={handleClose}>
+      {htmlWidth <= 750 ? (
+        <div className="intelligent-talk" onClick={(e) => e.stopPropagation()}>
+          <header className="talk-header">
+            <div className="talk-title">智能对话</div>
+            <div className="talk-close" onClick={handleClose}></div>
           </header>
-          <section className='talk-box' ref={iframeBoxRef}>
+          <section className="talk-box" ref={iframeBoxRef}>
             {msgQueue.map((item, index) => RenderMsg(item, index))}
           </section>
-          <footer className='talk-input'>
+          <footer className="talk-input">
             <input
-              type='text'
-              placeholder='请输入你的问题'
+              type="text"
+              placeholder="请输入你的问题"
               value={inputValue}
-              onKeyDown={e => {
-                if (e.key === 'Enter') {
-                  handleSubmit();
-                }
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSubmit()
               }}
               onChange={handleInputChange}
             />
-            <button onClick={handleSubmit} className={`submit-btn ${isAnswering && 'disabled'}`}>
+            <button
+              onClick={handleSubmit}
+              className={`submit-btn ${isAnswering && 'disabled'}`}
+            >
               发送
             </button>
           </footer>
         </div>
-      </Draggable>
+      ) : (
+        <Draggable bounds=".bot-mask" handle=".talk-header">
+          <div
+            className="intelligent-talk"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <header className="talk-header">
+              <div className="talk-title">智能对话</div>
+              <div className="talk-close" onClick={handleClose}></div>
+            </header>
+            <section className="talk-box" ref={iframeBoxRef}>
+              {msgQueue.map((item, index) => RenderMsg(item, index))}
+            </section>
+            <footer className="talk-input">
+              <input
+                type="text"
+                placeholder="请输入你的问题"
+                value={inputValue}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSubmit()
+                }}
+                onChange={handleInputChange}
+              />
+              <button
+                onClick={handleSubmit}
+                className={`submit-btn ${isAnswering && 'disabled'}`}
+              >
+                发送
+              </button>
+            </footer>
+          </div>
+        </Draggable>
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default IntelligentTalk;
+export default IntelligentTalk

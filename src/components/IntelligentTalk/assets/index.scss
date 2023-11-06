@@ -4,7 +4,7 @@
   width: 100%;
   height: 100%;
   z-index: 999999;
-  display: none;
+  // display: none;
   // justify-content: center;
   // align-items: center;
   .intelligent-talk {
@@ -87,7 +87,7 @@
         .questioner-msg {
           max-width: 450px;
           border-radius: 10px 0 10px 10px;
-          background: #E0EEFF;
+          background: #e0eeff;
           box-sizing: border-box;
           padding: 8px 17px;
           color: #242424;
@@ -135,5 +135,74 @@
         }
       }
     }
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .bot-mask .intelligent-talk {
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .bot-mask .intelligent-talk > header {
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  .bot-mask .intelligent-talk > header .talk-close {
+    width: 15px;
+    height: 15px;
+    background-size: 100%;
+  }
+
+  .bot-mask .intelligent-talk .talk-input {
+    display: flex;
+    padding: 15px;
+  }
+
+  .bot-mask .intelligent-talk .talk-input > input {
+    width: 100%;
+    height: 45px;
+    padding: 10px;
+    font-size: 14px;
+    margin-right: 15px;
+  }
+
+  .bot-mask .intelligent-talk .talk-input > button,
+  .bot-mask .intelligent-talk .talk-input button.submit-btn {
+    width: 100px;
+    height: 45px;
+    font-size: 14px;
+  }
+
+  .bot-mask .intelligent-talk .robat-time,
+  .bot-mask .intelligent-talk .questioner-time {
+    font-size: 14px !important;
+  }
+
+  .bot-mask .intelligent-talk .robat-msg,
+  .bot-mask .intelligent-talk .questioner-msg {
+    max-width: calc(100% - 100px);
+  }
+
+  .bot-mask .intelligent-talk .robat-avatar,
+  .bot-mask .intelligent-talk .questioner-avatar {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .bot-mask .intelligent-talk .talk-box {
+    padding: 15px;
+  }
+
+  .bot-mask .intelligent-talk .robat-answer,
+  .bot-mask .intelligent-talk .questioner-msg {
+    max-width: initial !important;
+    word-wrap: break-word;
+    margin-right: 10px !important;
   }
 }
