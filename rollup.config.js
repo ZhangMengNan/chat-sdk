@@ -8,6 +8,8 @@ import { terser } from 'rollup-plugin-terser'
 import postcssUrl from 'postcss-url';
 import json from '@rollup/plugin-json';
 
+console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+
 export default {
   input: 'src/index.tsx', // 替换成你的React组件入口文件路径
   output: {
@@ -20,8 +22,9 @@ export default {
   },
   plugins: [
     replace({
-      'process.env.NODE_ENV': JSON.stringify('development'),
-      'process.env.VUE_ENV': JSON.stringify('browser')
+      // 'process.env.NODE_ENV': JSON.stringify('development'),
+      'process.env.VUE_ENV': JSON.stringify('browser'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
     resolve(),
     commonjs({namedExports: {

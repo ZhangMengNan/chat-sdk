@@ -54,6 +54,11 @@ const talkData: TalkData[] = []
 
 type MsgObj = typeof talkData extends (infer T)[] ? T : never
 
+const baseUrl: any = {
+  development: 'yantu-playground.anatta.vip:8090',
+  production: 'yantu-ai-b.anatta.vip:8090',
+}
+
 const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
   let htmlWidth =
     document.documentElement.clientWidth || document.body.clientWidth
@@ -126,10 +131,10 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
           bot_avatar_url: res.data.bot_avatar_url,
           bot_name: res.data.bot_name,
         })
-        // yantu-ai-b.anatta.vip:8090 正式环境
-        // yantu-playground.anatta.vip:8090 测试环境
+        const url = baseUrl[process.env.NODE_ENV ?? 'development']
+
         connectSocket(
-          `wss://yantu-ai-b.anatta.vip:8090/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`
+          `wss:/${url}/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`
         )
       } else {
         // alert(res.message || '请求出错，请重试');

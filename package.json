@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "rollup -c -w --mode=devDependencies",
-    "build": "rollup -c --mode=production"
+    "dev": "cross-env NODE_ENV=development rollup -c -w",
+    "dev:prod": "cross-env NODE_ENV=production rollup -c -w",
+    "build:dev": "cross-env NODE_ENV=development rollup -c",
+    "build:prod": "cross-env NODE_ENV=production rollup -c"
   },
   "keywords": [],
   "author": "",
@@ -33,7 +35,9 @@
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "@rollup/plugin-json": "^6.0.0",
+    "@types/node": "^20.8.10",
     "@types/react": "^18.2.21",
+    "cross-env": "^7.0.3",
     "postcss": "^8.4.29",
     "rollup-plugin-postcss": "^4.0.2",
     "typescript": "^5.2.2"
