@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 // import { message } from 'antd';
 
-import { reqGetPreparationChatData } from 'src/api'
+import { reqGetPreparationChatData, reqGetAgentChatData } from 'src/api'
 import { getCurrentDateTime } from 'src/utils'
 import './assets/index.scss'
 
 type Props = {
   uuid: string | undefined
+  type: string | undefined
   isShowTalk: boolean
   setIsShowTalk: (flag: boolean) => any
 }
@@ -59,7 +60,12 @@ const baseUrl: any = {
   production: 'yantu-ai-b.anatta.vip:8090',
 }
 
-const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
+const IntelligentTalk = ({
+  uuid,
+  type: chatType,
+  isShowTalk,
+  setIsShowTalk,
+}: Props) => {
   let htmlWidth =
     document.documentElement.clientWidth || document.body.clientWidth
   let tempString = '',
@@ -125,7 +131,9 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
 
   const getPreparationData = async () => {
     if (uuid) {
-      const res = await reqGetPreparationChatData(uuid)
+      const res = await (chatType
+        ? reqGetAgentChatData(uuid)
+        : reqGetPreparationChatData(uuid))
       if (res?.code === 0) {
         setRobatMsg({
           bot_avatar_url: res.data.bot_avatar_url,
@@ -134,7 +142,9 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
         const url = baseUrl[process.env.NODE_ENV ?? 'development']
 
         connectSocket(
-          `wss:/${url}/v1/ws/open/chat/${res.data.chat_uuid}?Authorization=${res.data.token}`
+          `wss:/${url}/v1/ws/open/chat/${chatType ? 'agent/' : ''}${
+            res.data.chat_uuid
+          }?Authorization=${res.data.token}`
         )
       } else {
         // alert(res.message || '请求出错，请重试');
@@ -210,6 +220,21 @@ const IntelligentTalk = ({ uuid, isShowTalk, setIsShowTalk }: Props) => {
       msg: tempString,
       time: getCurrentDateTime(),
     }
+    // 营销智能体聊天对话 注：响应的消息 status 只有 stream_end
+    console.log('msgObj', msgObj)
+    if (msgObj.status === ChatMsgStatus.StreamEnd && chatType) {
+      tempMsgList.push({
+        type: TalkPeople.robat,
+        msg: msgObj?.msg || '',
+        time: getCurrentDateTime(),
+      })
+      console.log('tempMsgList', tempMsgList)
+      setMsgQueue([...tempMsgList])
+      setIsAnswering(false)
+
+      return
+    }
+
     if (msgObj.status === ChatMsgStatus.StreamBegin) {
       tempString = msgObj?.msg || ''
       tempMsgList.push(initMsgObj())

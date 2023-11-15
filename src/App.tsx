@@ -4,15 +4,18 @@ import IntelligentTalk from './components/IntelligentTalk/index'
 
 type Props = {
   uuid: string | undefined
+  type: string | undefined
 }
 
-const App = ({ uuid }: Props) => {
+const App = ({ uuid, type }: Props) => {
   const [isShowTalk, setIsShowTalk] = useState(true)
+
   return (
     <>
       <BotTalk setIsShowTalk={setIsShowTalk} />
       <IntelligentTalk
         uuid={uuid}
+        type={type}
         isShowTalk={isShowTalk}
         setIsShowTalk={setIsShowTalk}
       />
