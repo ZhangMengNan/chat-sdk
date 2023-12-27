@@ -303,13 +303,17 @@ const IntelligentTalk = ({
               }}
               onChange={handleInputChange}
             />
-            <button
+            <div
               onClick={handleSubmit}
-              className={`submit-btn ${isAnswering && 'disabled'}`}
-            >
-              发送
-            </button>
+              className={`submit-btn ${isAnswering && 'disabled'} ${
+                inputValue !== '' ? 'submit-btn-active' : ''
+              }`}
+            />
           </footer>
+          <p className="footer-text">
+            <div className="footer-text-img" />
+            Powered by YanTu
+          </p>
         </div>
       ) : (
         <Draggable bounds=".bot-mask" handle=".talk-header">
@@ -334,13 +338,17 @@ const IntelligentTalk = ({
                 }}
                 onChange={handleInputChange}
               />
-              <button
+              <div
                 onClick={handleSubmit}
-                className={`submit-btn ${isAnswering && 'disabled'}`}
-              >
-                发送
-              </button>
+                className={`submit-btn ${isAnswering && 'disabled'} ${
+                  inputValue !== '' ? 'submit-btn-active' : ''
+                }`}
+              />
             </footer>
+            <p className="footer-text">
+              <div className="footer-text-img" />
+              Powered by YanTu
+            </p>
           </div>
         </Draggable>
       )}

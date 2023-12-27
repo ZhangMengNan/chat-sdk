@@ -4,45 +4,53 @@
   width: 100%;
   height: 100%;
   z-index: 999999;
-  // display: none;
-  // justify-content: center;
-  // align-items: center;
+
   .intelligent-talk {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.08), 0 6px 6px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
     position: fixed;
     bottom: 20px;
     right: 20px;
     background-color: #fff;
+
     & > header {
-      font-size: 20px;
-      padding: 24px 30px;
+      font-size: 16px;
+      padding: 16px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #d3d3d3;
+      border-bottom: 1px solid #e4e7ed;
       cursor: grab;
+
       .talk-close {
-        width: 30px;
-        height: 30px;
-        background: url(./close.svg) no-repeat;
+        width: 20px;
+        height: 20px;
+        background: url(./close.png) no-repeat;
+        background-size: 100% 100%;
         cursor: pointer;
       }
     }
+
     .talk-box {
-      height: 444px;
+      height: 40vh;
+      max-height: 667px;
       overflow: auto;
-      padding: 14px 30px;
+      padding: 16px 25px;
+
       .talk-robat {
         display: flex;
         margin-bottom: 37px;
+
         .robat-avatar {
-          width: 40px;
-          height: 40px;
+          width: 28px;
+          height: 28px;
           background: url(./robat.svg) no-repeat;
-          margin-right: 12px;
+          background-size: 100% 100%;
+          margin-right: 10px;
           border-radius: 50%;
           overflow: hidden;
+
           img {
             width: 100%;
             height: 100%;
@@ -51,87 +59,129 @@
         .robat-msg {
           .robat-name {
             color: #8f959e;
-            font-family: PingFang SC;
-            font-size: 16px;
-            line-height: 28px;
+            font-size: 12px;
+            margin-bottom: 5px;
           }
+
           .robat-answer {
-            max-width: 450px;
+            max-width: 240px;
             border-radius: 0px 10px 10px 10px;
             background: #ececec;
-            box-sizing: border-box;
-            padding: 8px 17px;
+            padding: 8px 12px;
             color: #242424;
-            font-size: 16px;
-            line-height: 24px;
-            margin-right: 16px;
+            font-size: 14px;
+            margin-right: 5px;
+            word-wrap: break-word;
           }
         }
         .robat-time {
           color: #979797;
-          font-size: 20px;
-          line-height: 28px;
-          margin-top: 28px;
+          font-size: 12px;
+          align-self: flex-end;
         }
       }
       .talk-questioner {
         display: flex;
         justify-content: flex-end;
         margin-bottom: 37px;
+
         .questioner-time {
           color: #979797;
-          font-size: 20px;
-          line-height: 28px;
-          margin-right: 16px;
+          font-size: 12px;
+          align-self: flex-end;
+          margin-right: 5px;
         }
+
         .questioner-msg {
-          max-width: 450px;
+          max-width: 280px;
           border-radius: 10px 0 10px 10px;
           background: #e0eeff;
           box-sizing: border-box;
-          padding: 8px 17px;
+          padding: 8px 12px;
           color: #242424;
-          font-size: 16px;
-          line-height: 24px;
-          margin-right: 12px;
+          font-size: 14px;
+          margin-right: 10px;
           word-break: break-all;
         }
+
         .questioner-avatar {
-          width: 40px;
-          height: 40px;
+          width: 28px;
+          height: 28px;
           background: url(./questioner.svg) no-repeat;
+          background-size: 100% 100%;
           border-radius: 50%;
         }
       }
     }
+
     .talk-input {
-      padding: 14px 30px 24px 17px;
+      width: calc(100% - 40px);
+      border-radius: 1.5rem;
+      padding: 0.25rem 1rem;
+      display: flex;
+      align-items: center;
+      border: 1px solid #e4e7ed;
+      min-height: 44px;
+      box-sizing: border-box;
+      margin: 0 auto;
+      font-size: 12px !important;
+      font-weight: initial !important;
+
       input {
-        width: 421px;
-        height: 58px;
-        border-radius: 3px;
-        font-size: 18px;
-        border: 1px solid var(--gray-gray-4, #dcdcdc);
-        background: var(--gray-white, #fff);
-        padding: 12px 24px;
-        box-sizing: border-box;
-        margin-right: 24px;
+        border: none;
+        flex: 1;
+
         &::-webkit-input-placeholder {
           color: #ccc;
         }
+
+        &:focus {
+          outline: none;
+          border: none;
+        }
       }
-      button.submit-btn {
-        width: 164px;
-        height: 58px;
-        border-radius: 3px;
-        background-color: #0052d9;
-        border: none;
-        color: #fff;
+
+      .submit-btn {
+        width: 22px;
+        height: 22px;
+        background: url(./send.png) no-repeat;
+        background-size: 100% 100%;
         cursor: pointer;
+
         &.disabled {
-          background-color: #ccc;
-          box-shadow: none;
           cursor: not-allowed;
+        }
+      }
+
+      .submit-btn-active {
+        background: url(./send-hover.png) no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+
+    .footer-text {
+      margin: 0;
+      padding: 10px 0;
+      font-size: 12px;
+      color: rgba(89, 103, 128, 1);
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &-img {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+        background: url(./icon-yanxin.png) no-repeat;
+        background-size: 100% 100%;
+
+        > img {
+          width: 60%;
+          height: 60%;
         }
       }
     }
@@ -151,9 +201,9 @@
         font-size: 16px;
 
         .talk-close {
-          width: 15px;
-          height: 15px;
-          background-size: 100%;
+          // width: 15px;
+          // height: 15px;
+          // background-size: 100%;
         }
       }
 
@@ -163,22 +213,22 @@
 
       .talk-input {
         display: flex;
-        padding: 15px;
+        padding: 0.25rem 1rem !important;
 
-        > input {
-          width: 100%;
-          height: 45px;
-          padding: 10px;
-          font-size: 14px;
-          margin-right: 15px;
-        }
+        // > input {
+        //   width: 100%;
+        //   height: 45px;
+        //   padding: 10px;
+        //   font-size: 14px;
+        //   margin-right: 15px;
+        // }
 
-        > button,
-        button.submit-btn {
-          width: 100px;
-          height: 45px;
-          font-size: 14px;
-        }
+        // > button,
+        // button.submit-btn {
+        //   width: 100px;
+        //   height: 45px;
+        //   font-size: 14px;
+        // }
       }
 
       .robat-msg,
@@ -199,10 +249,10 @@
         margin-right: 10px !important;
       }
 
-      .robat-time,
-      .questioner-time {
-        font-size: 14px !important;
-      }
+      // .robat-time,
+      // .questioner-time {
+      //   font-size: 14px !important;
+      // }
 
       .questioner-time {
         margin-right: 10px !important;
@@ -226,36 +276,36 @@
     font-size: 16px;
   }
 
-  .bot-mask .intelligent-talk > header .talk-close {
-    width: 15px;
-    height: 15px;
-    background-size: 100%;
-  }
+  // .bot-mask .intelligent-talk > header .talk-close {
+  //   width: 15px;
+  //   height: 15px;
+  //   background-size: 100%;
+  // }
 
   .bot-mask .intelligent-talk .talk-input {
     display: flex;
     padding: 15px;
   }
 
-  .bot-mask .intelligent-talk .talk-input > input {
-    width: 100%;
-    height: 45px;
-    padding: 10px;
-    font-size: 14px;
-    margin-right: 15px;
-  }
+  // .bot-mask .intelligent-talk .talk-input > input {
+  //   width: 100%;
+  //   height: 45px;
+  //   padding: 10px;
+  //   font-size: 14px;
+  //   margin-right: 15px;
+  // }
 
-  .bot-mask .intelligent-talk .talk-input > button,
-  .bot-mask .intelligent-talk .talk-input button.submit-btn {
-    width: 100px;
-    height: 45px;
-    font-size: 14px;
-  }
+  // .bot-mask .intelligent-talk .talk-input > button,
+  // .bot-mask .intelligent-talk .talk-input button.submit-btn {
+  //   width: 100px;
+  //   height: 45px;
+  //   font-size: 14px;
+  // }
 
-  .bot-mask .intelligent-talk .robat-time,
-  .bot-mask .intelligent-talk .questioner-time {
-    font-size: 14px !important;
-  }
+  // .bot-mask .intelligent-talk .robat-time,
+  // .bot-mask .intelligent-talk .questioner-time {
+  //   font-size: 14px !important;
+  // }
 
   .bot-mask .intelligent-talk .robat-msg,
   .bot-mask .intelligent-talk .questioner-msg {

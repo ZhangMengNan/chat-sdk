@@ -7,6 +7,8 @@ import postcss from 'rollup-plugin-postcss'
 import { terser } from 'rollup-plugin-terser'
 import postcssUrl from 'postcss-url';
 import json from '@rollup/plugin-json';
+import svg from "rollup-plugin-svg";
+
 
 console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 
@@ -49,6 +51,7 @@ export default {
         }),
       ],
     }),
+    svg(),
     terser(),
     json()
   ],
